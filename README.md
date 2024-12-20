@@ -34,12 +34,11 @@ python emulator.py --hostname "ksen" --vfs "C:/Users/ksen/config1.5/ale.zip" --s
 ### Содердание скриптового файла
 ```
 ls
-cd folder1
-ls
-cd ..
 pwd
-rev file1.txt
-wc file1.txt
+rev abc.txt
+wc months.txt
+cd papka
+ls
 ```
 ### Результат тестов emulator.py
 ![image](https://github.com/user-attachments/assets/2efca4d6-2998-418e-b8c2-9a04df899dc2)
