@@ -14,7 +14,7 @@ class Emulator:
         self.username = username
         self.hostname = hostname
         self.current_directory = '/'  # Текущая директория (начинаем с корня '/')
-        self.absolute_path = r"C:\Users\marka\Desktop\Konfig"
+        self.absolute_path = r"C:\Users\ksen\config1.5"
         self.zip_path = zip_path
         self.script_path = script_path
         self.file_system = {}
@@ -25,19 +25,26 @@ class Emulator:
         return self.current_directory if self.current_directory != '/' else '/'
 
     def _load_file_system(self):
-        if zipfile.is_zipfile(self.zip_path):
-            with zipfile.ZipFile(self.zip_path, 'r') as zip_ref:
-                for file in zip_ref.namelist():
-                    normalized_path = file.lstrip('/')
+        """Загружает файловую систему из ZIP-архива."""
+        if not zipfile.is_zipfile(self.zip_path):
+            print("")
+            return
+
+        with zipfile.ZipFile(self.zip_path, 'r') as zip_ref:
+            for file in zip_ref.namelist():
+                normalized_path = file.lstrip('/')
+                try:
                     self.file_system[normalized_path] = zip_ref.read(file).decode('utf-8')
-        else:
-            print("Error: provided file is not a ZIP archive.")
+                except Exception as e:
+                    print(f"Error reading file {file} from ZIP: {e}")
 
     def ls(self, directory=None):
+        """Выводит содержимое директории."""
         if directory:
             path = os.path.join(self.current_directory, directory).lstrip('/')
         else:
             path = self.current_directory.lstrip('/')
+
         output = []
         found_files = False
         for file in self.file_system:
@@ -46,13 +53,16 @@ class Emulator:
                 if '/' not in relative_path:
                     output.append(relative_path)
                     found_files = True
+
         if not found_files:
             output.append("Directory is empty.")
+
         response = '\n'.join(output)
         print(response)
         return response
 
     def cd(self, path):
+        """Меняет текущую директорию."""
         if path == "..":
             if self.current_directory != '/':
                 self.current_directory = os.path.dirname(self.current_directory.rstrip('/')) + '/'
@@ -94,6 +104,7 @@ class Emulator:
             return "Error: file not found."
 
     def _run_script(self, gui):
+        """Выполняет команды из скрипта."""
         try:
             with open(self.script_path, 'r') as script_file:
                 for command in script_file:
@@ -113,6 +124,7 @@ class Emulator:
             print(f"Error running script: {e}")
 
     def execute_command(self, command):
+        """Выполняет команду."""
         if command.startswith("ls"):
             args = command.split(" ")
             if len(args) == 2:
@@ -142,7 +154,7 @@ class EmulatorGUI:
         self.window.minsize(900, 500)
         self.output_text = scrolledtext.ScrolledText(self.window, width=80, height=20, bg="black", fg="green", state='disabled', font=("Consolas", 12))
         self.output_text.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-        self.host_display = tk.Label(self.window, text=f"current directory: {emulator.username}@{emulator.hostname}:{emulator._get_prompt_directory()}$",bg="black", fg="green", font=("Consolas", 12), anchor="w")
+        self.host_display = tk.Label(self.window, text=f"current directory: {emulator.username}@{emulator.hostname}:{emulator._get_prompt_directory()}$", bg="black", fg="green", font=("Consolas", 12), anchor="w")
         self.host_display.grid(row=2, column=0, sticky='w', padx=10, pady=5)
         self.command_entry = tk.Entry(self.window, width=80, bg="black", fg="green", font=("Consolas", 12), insertbackground="green")
         self.command_entry.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
@@ -157,11 +169,11 @@ class EmulatorGUI:
     def run_command(self, event):
         command = self.command_entry.get()
         self.output_text.config(state='normal')
-        self.output_text.insert(tk.END, f"{emulator.username}@{emulator.hostname}:{emulator._get_prompt_directory()}$ {command}\n")
+        self.output_text.insert(tk.END, f"{self.emulator.username}@{self.emulator.hostname}:{self.emulator._get_prompt_directory()}$ {command}\n")
         self.output_text.config(state='disabled')
         self.command_entry.delete(0, tk.END)
         output = self.execute_command(command)
-        self.host_display.config(text=f"current directory: {emulator.username}@{emulator.hostname}:{emulator._get_prompt_directory()}$")
+        self.host_display.config(text=f"current directory: {self.emulator.username}@{self.emulator.hostname}:{self.emulator._get_prompt_directory()}$")
         self.host_display.update()
         self.output_text.config(state='normal')
         self.output_text.insert(tk.END, f"{output}\n")
