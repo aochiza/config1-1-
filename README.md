@@ -44,5 +44,6 @@ ls
 ![image](https://github.com/user-attachments/assets/2efca4d6-2998-418e-b8c2-9a04df899dc2)
 
 ### Результат тестов test.py
-![image](https://github.com/user-attachments/assets/58d9c620-5817-471f-8592-93df2cb18961)
+![image](https://github.com/user-attachments/assets/79809590-5633-40b8-8bc7-f9498396934c)
+
 
