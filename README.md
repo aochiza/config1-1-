@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/c3628b3e-5824-45f4-99bb-762a69b07ef9)# Конфигурационное управление. Домашнее задание
+# Конфигурационное управление. Домашнее задание
 # Hi there, I'm [ksen](https://daniilshat.ru/) ![](https://github.com/blackcater/blackcater/raw/main/images/Hi.gif) 
 ### Задание №1, 2 вариант<br />
 ### Постановка задачи:<br />
