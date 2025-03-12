@@ -3,4 +3,3 @@ pwd
 rev abc.txt
 wc months.txt
 cd papka
-ls
