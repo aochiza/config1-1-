@@ -3,7 +3,7 @@ import zipfile
 import unittest
 from unittest.mock import patch, mock_open
 
-# Импортируем класс Emulator и функции add_folder, remove_last_folder
+# Импорт класса Emulator и функции add_folder, remove_last_folder
 from emulator import Emulator, add_folder, remove_last_folder
 
 class TestEmulator(unittest.TestCase):
